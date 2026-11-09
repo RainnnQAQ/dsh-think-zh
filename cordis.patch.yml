@@ -1,0 +1,13 @@
+- insert:
+    - id: think-zh
+      name: dsh-think-zh
+      inject: [systemPrompt]
+      config:
+        enabled: true
+        strength: hard
+        perTurn: true
+        codeVerbatim: true
+        customText: ''
+        sectionOrder: 10250
+        contextOrder: 900
+        verbose: false

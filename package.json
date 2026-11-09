@@ -1,0 +1,57 @@
+{
+  "name": "dsh-think-zh",
+  "version": "1.0.0",
+  "description": "让 DeepSeek Harness 用简体中文思考（thinking / reasoning）：系统提示注入 + 每轮运行时提醒 + /think-zh 命令 + 设置页面板，代码与命令原文不翻译。",
+  "author": "RainnnQAQ",
+  "type": "module",
+  "main": "index.js",
+  "exports": {
+    ".": "./index.js",
+    "./client": "./client.js",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "index.js",
+    "client.js",
+    "lib",
+    "cordis.patch.yml",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE"
+  ],
+  "meta": {
+    "title": "中文思考",
+    "description": "让 DeepSeek Harness 用简体中文思考（thinking / reasoning，回复前那段内部推理草稿）：系统提示 + 每轮提醒 + 设置页开关，支持四档强度与自定义正文，代码与命令原文不翻译。"
+  },
+  "keywords": [
+    "dsh",
+    "dsh-plugin",
+    "deepseek-harness",
+    "cordis-plugin",
+    "thinking",
+    "reasoning",
+    "chinese",
+    "i18n",
+    "中文思考"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "immediately": true
+    }
+  },
+  "engines": {
+    "dsh": ">=0.1.7-rc.2",
+    "node": ">=18"
+  },
+  "scripts": {
+    "test": "node index.js --selftest",
+    "test:probe": "node test/probe.mjs",
+    "test:e2e": "node test/e2e.mjs",
+    "install:profile": "node install.mjs"
+  },
+  "license": "MIT"
+}
