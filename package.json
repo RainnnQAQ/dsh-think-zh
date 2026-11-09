@@ -1,7 +1,7 @@
 {
   "name": "dsh-think-zh",
   "version": "1.0.0",
-  "description": "让 DeepSeek Harness 用简体中文思考（thinking / reasoning）：系统提示注入 + 每轮运行时提醒 + 设置页面板，代码与命令原文不翻译。",
+  "description": "让 DeepSeek Harness 用简体中文思考",
   "author": "RainnnQAQ",
   "repository": {
     "type": "git",
@@ -29,7 +29,7 @@
   ],
   "meta": {
     "title": "中文思考",
-    "description": "让 DeepSeek Harness 用简体中文思考（thinking / reasoning，回复前那段内部推理草稿）：系统提示 + 每轮提醒 + 设置页开关，支持四档强度与自定义正文，代码与命令原文不翻译。"
+    "description": "让 DeepSeek Harness 用简体中文思考"
   },
   "keywords": [
     "dsh",
