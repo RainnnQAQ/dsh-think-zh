@@ -1,8 +1,16 @@
 {
   "name": "dsh-think-zh",
   "version": "1.0.0",
-  "description": "让 DeepSeek Harness 用简体中文思考（thinking / reasoning）：系统提示注入 + 每轮运行时提醒 + /think-zh 命令 + 设置页面板，代码与命令原文不翻译。",
+  "description": "让 DeepSeek Harness 用简体中文思考（thinking / reasoning）：系统提示注入 + 每轮运行时提醒 + 设置页面板，代码与命令原文不翻译。",
   "author": "RainnnQAQ",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RainnnQAQ/dsh-think-zh.git"
+  },
+  "homepage": "https://github.com/RainnnQAQ/dsh-think-zh#readme",
+  "bugs": {
+    "url": "https://github.com/RainnnQAQ/dsh-think-zh/issues"
+  },
   "type": "module",
   "main": "index.js",
   "exports": {

@@ -1,6 +1,5 @@
 import { appendLog, dshHome, log, resolveConfig } from './lib/config.js';
 import { buildContextText, buildSectionText } from './lib/prompt.js';
-import { registerCommand } from './lib/command.js';
 import { attachRoutes } from './lib/router.js';
 import { CONTEXT_NAME, SECTION_NAME, enforceAssembly } from './lib/assemble.js';
 import { runSelftest } from './lib/selftest.js';
@@ -71,33 +70,6 @@ export function installAssembleGuard(ctx, patchConfig, home = dshHome()) {
   }
 }
 
-function attachCommands(ctx, patchConfig, home) {
-  let attached = false;
-  const attempt = (target) => {
-    if (attached) return;
-    try {
-      const commandName = registerCommand(target, { patchConfig, home });
-      if (commandName) {
-        attached = true;
-        appendLog(`命令 /${commandName} 已注册`, home);
-      }
-    } catch (error) {
-      appendLog(`命令注册异常：${error && error.message ? error.message : String(error)}`, home);
-    }
-  };
-
-  attempt(ctx);
-  if (attached) return true;
-
-  try {
-    ctx.inject(['commands'], (inner) => attempt(inner || ctx));
-    appendLog('commands 尚未就绪，已排队等待注入', home);
-  } catch (error) {
-    appendLog(`ctx.inject 不可用：${error && error.message ? error.message : String(error)}`, home);
-  }
-  return false;
-}
-
 export function apply(ctx, config = {}) {
   const patchConfig = config && typeof config === 'object' ? config : {};
   const home = dshHome();
@@ -106,14 +78,9 @@ export function apply(ctx, config = {}) {
 
   safeRegister(ctx, patchConfig, home);
   installAssembleGuard(ctx, patchConfig, home);
-
-  attachCommands(ctx, patchConfig, home);
-
   attachRoutes(ctx, patchConfig, home);
-  log(
-    `命令挂载${'完成'}`,
-    resolveConfig(patchConfig, home),
-  );
+
+  log('装配完成', resolveConfig(patchConfig, home));
 
   try {
     ctx.on('session/created', () => safeRegister(ctx, patchConfig, home), { global: true });

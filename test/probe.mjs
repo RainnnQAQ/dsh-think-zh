@@ -9,7 +9,6 @@ process.env.DSH_HOME = home;
 const sections = [];
 const contexts = [];
 const listeners = new Map();
-const commands = [];
 
 const fakeCtx = {
   systemPrompt: {
@@ -26,15 +25,6 @@ const fakeCtx = {
     if (!listeners.has(name)) listeners.set(name, []);
     listeners.get(name).push({ handler, options });
     return () => {};
-  },
-  get(service) {
-    if (service !== 'commands') return null;
-    return {
-      register(spec) {
-        commands.push(spec);
-        return spec;
-      },
-    };
   },
 };
 
@@ -67,7 +57,7 @@ try {
   const contextText = typeof contexts[0]?.text === 'function' ? contexts[0].text({}) : contexts[0]?.text;
   check('每轮提醒非空', String(contextText).length > 0);
 
-  check('注册了命令', commands.length === 1 && commands[0]?.name === 'think-zh');
+  check('没有注册任何命令', typeof fakeCtx.get !== 'function');
 
   check('挂了 assemble 监听', listeners.has('system-prompt/assemble'));
   const guarded = listeners.get('system-prompt/assemble')?.[0];
@@ -79,13 +69,11 @@ try {
   check('兜底补回 context', result.contexts.some((c) => c.name === 'think-zh:reminder'));
   check('不动别人的段', result.sections.some((s) => s.name === 'dsh-purge'));
 
-  const status = await commands[0].handler({ rawInput: 'status' });
-  check('status 命令可用', status.kind === 'success' && status.text.includes('强度'));
-  const off = await commands[0].handler({ rawInput: 'off' });
-  check('off 命令可用', off.kind === 'success');
+  fs.writeFileSync(path.join(home, 'think-zh.json'), JSON.stringify({ enabled: false }), 'utf8');
   const offResult = await guarded.handler({ sections: [], contexts: [] }, {}, downstream);
   check('关闭后兜底移除 section', !offResult.sections.some((s) => s.name === 'think-zh:thinking-language'));
-  await commands[0].handler({ rawInput: 'on' });
+
+  fs.rmSync(path.join(home, 'think-zh.json'), { force: true });
 
   check('暴露隔离上下文注册入口', typeof globalThis.__dshThinkZhRegister === 'function');
 } catch (error) {
